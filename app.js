@@ -9,8 +9,9 @@ const globalErorrHandler = require("./controllers/globalErorrHandler");
 const AppError = require("./utils/appError");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const passport = require('passport');
+const passport = require("passport");
 const passportSetup = require("./config/passport-setup");
+
 
 require("dotenv").config();
 // routers
@@ -51,6 +52,9 @@ app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/blogs", blogRouter);
 //to handle unhandled urls it sends an 404 error
+
+
+
 app.all("*", (req, res, next) => {
   const err = new AppError(
     `the requested url ${req.originalUrl} not found in this server`,
@@ -58,6 +62,7 @@ app.all("*", (req, res, next) => {
   );
   next(err);
 });
+
 //middle ware to catch async errors that uncought untill here all the app and beyoud
 app.use(globalErorrHandler);
 const DB = process.env.DATABASE_LOCAL;
