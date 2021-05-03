@@ -12,7 +12,6 @@ const cors = require("cors");
 const passport = require("passport");
 const passportSetup = require("./config/passport-setup");
 
-
 require("dotenv").config();
 // routers
 const userRouter = require("./routes/userRoutes");
@@ -52,8 +51,6 @@ app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/blogs", blogRouter);
 //to handle unhandled urls it sends an 404 error
-
-
 
 app.all("*", (req, res, next) => {
   const err = new AppError(
