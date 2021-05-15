@@ -6,26 +6,22 @@ exports.getDocsFactory = (Model, sarterFilter = {}) => {
   return catchAsync(async (req, res, next) => {
     console.log(req.query);
     const apiFeatures = new ApiFeatures(Model.find(sarterFilter), req.query);
-    const docs = await apiFeatures
-      .filter()
-      .sort()
-      .limit()
-      .paginate().query;
+    const docs = await apiFeatures.filter().sort().limit().paginate().query;
     // const docs = await doc.find();
     return res.status(200).json({
       status: "succeed",
       legnth: docs.length,
-      data: docs
+      data: docs,
     });
   });
 };
-exports.addDocFactory = Model => {
+exports.addDocFactory = (Model) => {
   return catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
     return res.status(201).json({
       status: "succeed",
       legnth: doc.legnth,
-      data: doc //the created data
+      data: doc, //the created data
     });
   });
 };
@@ -44,26 +40,26 @@ exports.getDocFactory = (Model, populate) => {
     }
     return res.status(200).json({
       status: "succeed",
-      data: { doc }
+      data: { doc },
     });
   });
 };
-exports.editDocFactory = Model => {
+exports.editDocFactory = (Model) => {
   return catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       validators: true,
-      new: true
+      new: true,
     });
     if (!doc) {
       return next(new AppError(`this id ${req.params.id} doesn't exist`, 404));
     }
     return res.status(200).json({
       status: "succeed",
-      data: { doc }
+      data: { doc },
     });
   });
 };
-exports.deleteDocFactory = Model => {
+exports.deleteDocFactory = (Model) => {
   return catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
     if (!doc) {
@@ -71,7 +67,7 @@ exports.deleteDocFactory = Model => {
     }
     return res.status(204).json({
       status: "succeed",
-      data: null
+      data: null,
     });
   });
 };

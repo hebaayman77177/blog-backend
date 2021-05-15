@@ -62,7 +62,9 @@ app.all("*", (req, res, next) => {
 
 //middle ware to catch async errors that uncought untill here all the app and beyoud
 app.use(globalErorrHandler);
+
 const DB = process.env.DATABASE_LOCAL;
+
 mongoose
   .connect(DB, {
     useNewUrlParser: true,

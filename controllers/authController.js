@@ -7,20 +7,10 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const sendEmail = require("../utils/email");
 
-const userPickedFields = ["name", "email", "photo"];
+const userPickedFields = ["_id","name", "email", "photo"];
 //middlewares
 function createSendToken(user, res, code, message) {
   const token = user.getToken({ id: user._id });
-  const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.COOKIE_JWT_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true,
-  };
-  if (process.env.NODE_ENV === "production") {
-    cookieOptions.secure = true;
-  }
-  res.cookie("jwt", token);
   user = _.pick(user, userPickedFields);
   return res.status(code).json({
     token: token,
@@ -46,7 +36,7 @@ exports.authMiddleware = catchAsync(async (req, res, next) => {
     "+passwordChangedAt"
   );
   if (!currentUser) {
-    return next(new AppError("please logi in", 401));
+    return next(new AppError("please login", 401));
   }
   //check that the user doesn't change his password at the life time of an jwt token
   if (currentUser.passwordChangedAt) {

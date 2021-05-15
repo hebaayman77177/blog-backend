@@ -20,12 +20,27 @@ const router = express.Router({ mergeParams: true });
 
 router
   .route("/upload-img")
-  .post(upload.single("image"), blogController.uploadImg);
+  .post(
+    authController.authMiddleware,
+    upload.single("image"),
+    blogController.uploadImg
+  );
 
-router.route("/").get(blogController.getBlogs).post(blogController.addBlog);
+router
+  .route("/")
+  .get(blogController.getBlogs)
+  .post(authController.authMiddleware, blogController.addBlog);
 router
   .route("/:id")
   .get(blogController.getBlog)
-  .patch(blogController.editBlog)
-  .delete(blogController.deleteBlog);
+  .patch(
+    authController.authMiddleware,
+    blogController.blogOwner,
+    blogController.editBlog
+  )
+  .delete(
+    authController.authMiddleware,
+    blogController.blogOwner,
+    blogController.deleteBlog
+  );
 module.exports = router;
