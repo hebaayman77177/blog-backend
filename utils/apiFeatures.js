@@ -7,11 +7,14 @@ class ApiFeatures {
   filter() {
     const queryObject = { ...this.queryString };
     const excludedFields = ["page", "sort", "limit", "fields"];
-    excludedFields.forEach(e => delete queryObject[e]);
+    excludedFields.forEach((e) => delete queryObject[e]);
     //
     let queryStr = JSON.stringify(queryObject);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
-    //
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    //to allow query on nested object {creator:{id:'',name:''}}
+    // type in the url ?creator--id=
+    //this will convert it to creator.id=
+    queryStr=queryStr.replace("--", ".");
     this.query = this.query.find(JSON.parse(queryStr));
     return this;
   }

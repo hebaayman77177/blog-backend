@@ -21,7 +21,7 @@ const router = express.Router({ mergeParams: true });
 router
   .route("/upload-img")
   .post(
-    authController.authMiddleware,
+    // authController.authMiddleware,
     upload.single("image"),
     blogController.uploadImg
   );

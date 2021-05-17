@@ -6,7 +6,7 @@ const funFactory = require("./controllerFunctionsFactory");
 
 function filterFields(object, fields) {
   const obj = {};
-  Object.keys(object).forEach(ele => {
+  Object.keys(object).forEach((ele) => {
     console.log("__", object[ele]);
     if (fields.includes(ele)) {
       console.log("ok");
@@ -23,17 +23,17 @@ exports.editMe = catchAsync(async (req, res, next) => {
   //get the user
   const currentUser = await User.findById(req.currentUser._id);
   //filter the edit fields not to edit not allowed fields
-  const allowedFields = ["name", "email", "photo"];
+  const allowedFields = ["name", "email", "photo", "createdAt"];
   const editObj = filterFields(req.body, allowedFields);
   //update the user
   const updatedUser = await User.findByIdAndUpdate(currentUser._id, editObj, {
     validators: true,
-    new: true
+    new: true,
   });
   return res.status(200).json({
     status: "succeed",
     message: "the information was updated successfully",
-    data: updatedUser
+    data: updatedUser,
   });
 });
 exports.deleteMe = catchAsync(async (req, res, next) => {
@@ -45,7 +45,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: "succeed",
     message: "you have been deleted successfully",
-    data: null
+    data: null,
   });
 });
 exports.getUsers = funFactory.getDocsFactory(User);
